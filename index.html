@@ -450,7 +450,7 @@
       <button class="btn btn-primary" @click="resetAll">重新测试</button>
     </div>
 
-    <p class="tip-small" style="margin-top:18px;">⚠️趣味心理评估，仅自我参考，不属于专业心理诊断<br>💡提示：海报功能需要把文件保存到本地浏览器打开运行</p>
+    <p class="tip-small" style="margin-top:18px;">⚠️趣味心理评估，仅自我参考，不属于专业心理诊断</p>
   </div>
 
   <!-- 隐藏海报DOM，专门用来导出图片 -->
@@ -492,78 +492,78 @@ createApp({
         {
           title: '当我搞砸一件事时，我会持续责怪自己很久',
           options: [
-            { label: 'A. 非常不符合', score: 0 },
-            { label: 'B. 不太符合', score: 2 },
-            { label: 'C. 一般', score: 3 },
-            { label: 'D. 比较符合', score: 4 },
-            { label: 'E. 非常符合', score: 5 }
+            { label: 'A. 非常不符合', score: 5 },
+            { label: 'B. 不太符合', score: 3 },
+            { label: 'C. 一般', score: 2 },
+            { label: 'D. 比较符合', score: 1 },
+            { label: 'E. 非常符合', score: 0 }
           ]
         },
         {
           title: '我嘴上说无所谓，其实只是害怕努力之后还是失败',
           options: [
-            { label: 'A. 非常不符合', score: 0 },
-            { label: 'B. 不太符合', score: 2 },
-            { label: 'C. 一般', score: 3 },
-            { label: 'D. 比较符合', score: 4 },
-            { label: 'E. 非常符合', score: 5 }
+            { label: 'A. 非常不符合', score: 5 },
+            { label: 'B. 不太符合', score: 3 },
+            { label: 'C. 一般', score: 2 },
+            { label: 'D. 比较符合', score: 1 },
+            { label: 'E. 非常符合', score: 0 }
           ]
         },
         {
           title: '别人负面评价我时，我的情绪会波动很久',
           options: [
-            { label: 'A. 非常不符合', score: 0 },
-            { label: 'B. 不太符合', score: 2 },
-            { label: 'C. 一般', score: 3 },
-            { label: 'D. 比较符合', score: 4 },
-            { label: 'E. 非常符合', score: 5 }
+            { label: 'A. 非常不符合', score: 5 },
+            { label: 'B. 不太符合', score: 3 },
+            { label: 'C. 一般', score: 2 },
+            { label: 'D. 比较符合', score: 1 },
+            { label: 'E. 非常符合', score: 0 }
           ]
         },
         {
           title: '我接纳自己的不足，同时依然愿意慢慢变好',
           options: [
-            { label: 'A. 非常不符合', score: 5 },
-            { label: 'B. 不太符合', score: 4 },
-            { label: 'C. 一般', score: 3 },
-            { label: 'D. 比较符合', score: 2 },
-            { label: 'E. 非常符合', score: 0 }
+            { label: 'A. 非常不符合', score: 0 },
+            { label: 'B. 不太符合', score: 1 },
+            { label: 'C. 一般', score: 2 },
+            { label: 'D. 比较符合', score: 3 },
+            { label: 'E. 非常符合', score: 5 }
           ]
         },
         {
           title: '我需要靠别人的认可，才能觉得自己不错',
           options: [
-            { label: 'A. 非常不符合', score: 0 },
-            { label: 'B. 不太符合', score: 2 },
-            { label: 'C. 一般', score: 3 },
-            { label: 'D. 比较符合', score: 4 },
-            { label: 'E. 非常符合', score: 5 }
+            { label: 'A. 非常不符合', score: 5 },
+            { label: 'B. 不太符合', score: 3 },
+            { label: 'C. 一般', score: 2 },
+            { label: 'D. 比较符合', score: 1 },
+            { label: 'E. 非常符合', score: 0 }
           ]
         }
       ],
       resultMap: [
         {
-          min: 20, max: 25,
+          min: 21, max: 25,
+          tag: '自在接纳型',
+          slogan: '坦然看见短板，带着包容继续往前走',
+          text: '你可以坦然看见自己的短板，允许自己出错，不需要一直靠外界认可证明价值。接纳不是躺平摆烂，是带着包容继续往前走。'
+        },
+        {
+          min: 14, max: 20,
+          tag: '温和成长型',
+          slogan: '多数时候体谅自己，受挫时容易挑剔自己',
+          text: '大部分时候你可以体谅自己，但遇到重大挫败、他人评价时，还是容易不自觉开始挑剔自己。你正在学习和自己好好相处。'
+        },
+        {
+          min: 7, max: 13,
+          tag: '敏感内耗型',
+          slogan: '很想变好，习惯用自我苛责驱动自己',
+          text: '你很在意成败和别人看法，犯错之后容易长时间陷在自我否定里。你很想变好，但常常在用苛责驱动自己。'
+        },
+        {
+          min: 0, max: 6,
           tag: '伪接纳·道理自欺型',
           slogan: '心里熟读和解文案，行动持续审判自己',
           text: '你看过很多“接纳自己”的文字，理智上非常清楚人无完人。但一旦事情出错、达不到期待，旧有的苛责模式立刻启动。你会安慰别人“没关系”，这套温柔从来不会留给自己。所谓和解，只是存放在收藏夹里的理论；遇到压力，你还是第一个牺牲自己感受去补缺口的人。'
-        },
-        {
-          min: 10, max: 19,
-          tag: '半接纳·摇摆拉扯型',
-          slogan: '偶尔放过自己，前提是没有搞砸事情',
-          text: '状态顺风顺水的时候，你可以大方接纳自己，觉得“我这样就很好”；一旦遭遇失败、差评、落后，接纳立刻失效，迅速切换自我攻击模式。你的接纳是有条件的：只有表现合格，才配善待自己。一旦不符合期待，就收回对自己的包容。'
-        },
-        {
-          min: 4, max: 9,
-          tag: '渐进接纳·有边界的善待',
-          slogan: '优先照顾感受，不拿完美绑架自己',
-          text: '你明白接纳不等于躺平摆烂。你依然会想要进步，但不再用“必须完美”惩罚自己。就算事情搞砸，你第一反应不再是否定整个人，而是区分：这件事搞砸了 ≠ 我这个人不值得被善待。你正在建立稳定的自我善待模式，接纳不再依赖事情结果的好坏。'
-        },
-        {
-          min: 0, max: 3,
-          tag: '本真接纳·无条件善待型',
-          slogan: '无论好坏境遇，你都站在自己这边',
-          text: '你的接纳不需要前提。成功时不膨胀，失意时不反噬自己。你不需要靠优秀、懂事、不出错换取自我善待。哪怕暴露笨拙、软弱、局限，你的第一盟友永远是自己。你不需要反复说服自己“要接纳”，善待自己已经变成本能。'
         }
       ]
     };
@@ -584,9 +584,9 @@ createApp({
     },
     resultData() {
       const score = this.totalScore;
-      if (score >= 20) return this.resultMap[0];
-      if (score >= 10) return this.resultMap[1];
-      if (score >= 4) return this.resultMap[2];
+      if (score >= 21) return this.resultMap[0];
+      if (score >= 14) return this.resultMap[1];
+      if (score >= 7) return this.resultMap[2];
       return this.resultMap[3];
     },
     progressPercent() {
