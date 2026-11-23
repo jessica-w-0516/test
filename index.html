@@ -6,7 +6,7 @@
 <title>自我接纳真伪指数评估</title>
 <meta name="description" content="趣味心理测试：测你的自我接纳是真心接纳，还是只是收藏了和解文案？一共5题" />
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
   * {
     margin: 0;
@@ -350,31 +350,6 @@
     font-size: 12px;
     color: #899c99;
   }
-
-  /* 海报预览弹窗 */
-  .poster-mask {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .poster-preview-wrap {
-    text-align: center;
-  }
-  .poster-preview-img {
-    width: 320px;
-    border-radius: 24px;
-    background: #fff;
-  }
-  .poster-preview-tip {
-    color: #fff;
-    margin-top:14px;
-    font-size:14px;
-  }
 </style>
 </head>
 
@@ -444,8 +419,8 @@
 
     <div class="result-action-row">
       <button class="btn btn-ghost" @click="copyResult">复制结果</button>
-      <button class="btn btn-ghost" @click="openSharePoster" :disabled="generating">
-        {{ generating ? '生成中...' : '分享海报' }}
+      <button class="btn btn-ghost" @click="downloadPoster" :disabled="generating">
+        {{ generating ? '生成中...' : '下载海报' }}
       </button>
       <button class="btn btn-primary" @click="resetAll">重新测试</button>
     </div>
@@ -453,7 +428,7 @@
     <p class="tip-small" style="margin-top:18px;">⚠️趣味心理评估，仅自我参考，不属于专业心理诊断</p>
   </div>
 
-  <!-- 隐藏海报DOM，专门用来导出图片 -->
+  <!-- 隐藏海报DOM，用于导出图片 -->
   <div ref="posterDom" class="poster-box">
     <div class="poster-title">自我接纳真伪指数测试</div>
     <div class="poster-score">{{ totalScore }}</div>
@@ -461,14 +436,6 @@
     <div class="poster-slogan">「{{ resultData.slogan }}」</div>
     <div class="poster-desc">{{ resultData.text }}</div>
     <div class="poster-footer">趣味心理测试 · 仅供娱乐参考</div>
-  </div>
-
-  <!-- 海报预览弹窗 -->
-  <div v-if="showPosterMask" class="poster-mask" @click.self="closePosterMask">
-    <div class="poster-preview-wrap">
-      <img class="poster-preview-img" :src="posterImgUrl" alt="分享海报">
-      <div class="poster-preview-tip">长按图片保存到相册 / 分享</div>
-    </div>
   </div>
 
   <div v-if="showToast" class="toast">{{ toastText }}</div>
@@ -486,8 +453,6 @@ createApp({
       showToast: false,
       toastText: '',
       generating: false,
-      showPosterMask: false,
-      posterImgUrl: '',
       questionList: [
         {
           title: '当我搞砸一件事时，我会持续责怪自己很久',
@@ -620,7 +585,6 @@ createApp({
       this.page = 'home';
       this.currentIndex = 0;
       this.answerList = [];
-      this.showPosterMask = false;
     },
     async copyResult() {
       const content = `✨自我接纳真伪指数：${this.totalScore}分｜${this.resultData.tag}\n「${this.resultData.slogan}」\n${this.resultData.text}`;
@@ -631,23 +595,27 @@ createApp({
         this.showToastFn('复制失败，请手动复制');
       }
     },
-    async openSharePoster() {
+    async downloadPoster() {
       if (this.generating) return;
       this.generating = true;
       try {
         const node = this.$refs.posterDom;
-        const dataUrl = await htmlToImage.toPng(node, { quality: 1 });
-        this.posterImgUrl = dataUrl;
-        this.showPosterMask = true;
+        const canvas = await html2canvas(node, {
+          useCORS: true,
+          scale: 2,
+          backgroundColor: null
+        });
+        const link = document.createElement('a');
+        link.download = `自我接纳测试-${this.totalScore}分.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        this.showToastFn('✅海报已下载');
       } catch (err) {
         console.error(err);
-        this.showToastFn('❌生成失败，请下载HTML本地打开');
+        this.showToastFn('❌生成海报失败');
       } finally {
         this.generating = false;
       }
-    },
-    closePosterMask() {
-      this.showPosterMask = false;
     },
     showToastFn(txt) {
       this.toastText = txt;
