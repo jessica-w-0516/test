@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>自我接纳真伪指数评估</title>
+<meta name="description" content="趣味心理测试：测你的自我接纳是真心接纳，还是只是收藏了和解文案？一共15题" />
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:focus,
+  button:focus-visible,
+  input:focus,
+  textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(238, 249, 247, 0.9), transparent 45%),
+      linear-gradient(180deg, #fff 0%, #f4faf8 100%);
+    color: #384442;
+    min-height: 100vh;
+    padding: 20px 14px 40px;
+  }
+
+  .app-container {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .top-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #e6f7f4, #b8e4dc, #8ed4c7);
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5f3f0;
+    border-radius: 26px;
+    padding: 30px 22px;
+    box-shadow:
+      0 8px 24px rgba(178, 228, 220, 0.32),
+      0 2px 6px rgba(140, 204, 194, 0.08);
+  }
+
+  .home-card {
+    text-align: center;
+    padding: 36px 22px;
+  }
+
+  .home-title {
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #384442;
+    margin-bottom: 10px;
+  }
+
+  .home-title .pink {
+    color: #78c8b8;
+    font-weight: 700;
+  }
+
+  .home-sub {
+    font-size: 14px;
+    color: #60726f;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  .divider-line {
+    width: 42px;
+    height: 2px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #b8e4dc, #8ed4c7);
+    margin: 0 auto 20px;
+  }
+
+  .home-desc {
+    background: #f8fcfb;
+    border: 1px solid #e6f7f4;
+    border-radius: 20px;
+    padding: 16px;
+    font-size: 14px;
+    color: #4a5956;
+    line-height: 1.7;
+    margin-bottom: 26px;
+    text-align: left;
+  }
+
+  .home-desc p + p {
+    margin-top: 8px;
+  }
+
+  .btn {
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .btn-primary {
+    background: #78c8b8;
+    color: #ffffff;
+    padding: 15px 36px;
+    border-radius: 999px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    box-shadow: 0 7px 18px rgba(120, 200, 184, 0.38);
+  }
+  .btn-primary:hover {
+    background: #60b5a4;
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(120, 200, 184, 0.28);
+  }
+
+  .btn-ghost {
+    background: #fff;
+    color: #78c8b8;
+    border: 1px solid #d9f0ec;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+  }
+  .btn-ghost:active {
+    background: #f4faf8;
+  }
+
+  .tip-small {
+    margin-top: 18px;
+    font-size: 12px;
+    color: #899c99;
+  }
+
+  .progress-wrap {
+    width: 100%;
+    height: 6px;
+    background: #e5f3f0;
+    border-radius: 99px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #e6f7f4, #b8e4dc, #8ed4c7);
+    border-radius: 99px;
+    transition: width 0.35s ease;
+  }
+
+  .question-card {
+    padding: 26px 20px;
+  }
+
+  .q-index {
+    font-size: 12px;
+    color: #899c99;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .q-title {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #384442;
+    margin-bottom: 20px;
+  }
+
+  .option-item {
+    background: #f8fcfb;
+    border: 1px solid #e5f3f0;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #4a5956;
+    line-height: 1.5;
+  }
+  .option-item:hover {
+    border-color: #b8e4dc;
+  }
+  .option-item.active {
+    border-color: #78c8b8 !important;
+    background: #f0faf8 !important;
+    color: #368072 !important;
+    box-shadow: 0 0 0 3px rgba(120, 200, 184, 0.18), 0 4px 12px rgba(120, 200, 184, 0.20);
+  }
+
+  .action-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .result-card {
+    padding: 28px 22px;
+    text-align: center;
+  }
+
+  .result-score-block {
+    margin-bottom: 18px;
+  }
+
+  .result-score {
+    font-size: 64px;
+    font-weight: 800;
+    color: #78c8b8;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .result-full {
+    font-size: 12px;
+    color: #899c99;
+    margin-top: 8px;
+    letter-spacing: 2px;
+  }
+
+  .result-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #fff 0%, #f0faf8 100%);
+    border: 1px solid #78c8b8;
+    color: #78c8b8;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .result-slogan {
+    font-size: 14px;
+    color: #60726f;
+    font-style: italic;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .result-text {
+    background: #f8fcfb;
+    border: 1px solid #e5f3f0;
+    border-radius: 20px;
+    padding: 16px;
+    text-align: left;
+    font-size: 14px;
+    color: #4a5956;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .result-text p + p {
+    margin-top: 10px;
+  }
+
+  .result-action-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #384442;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    z-index: 99;
+    box-shadow: 0 8px 20px rgba(56, 68, 66, 0.2);
+  }
+
+  /* 海报容器，用于导出图片，平时隐藏 */
+  .poster-box {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 340px;
+    background: linear-gradient(180deg, #fff 0%, #f0faf8 100%);
+    border-radius: 24px;
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .poster-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #384442;
+    margin-bottom: 16px;
+  }
+  .poster-score {
+    font-size: 56px;
+    font-weight: 800;
+    color: #78c8b8;
+    line-height: 1;
+  }
+  .poster-tag {
+    display: inline-block;
+    border: 1px solid #78c8b8;
+    color: #78c8b8;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 10px 0 12px;
+  }
+  .poster-slogan {
+    font-size: 14px;
+    color: #60726f;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .poster-desc {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #4a5956;
+    text-align: left;
+  }
+  .poster-footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #899c99;
+  }
+
+  /* 海报预览弹窗 */
+  .poster-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .poster-preview-wrap {
+    text-align: center;
+  }
+  .poster-preview-img {
+    width: 320px;
+    border-radius: 24px;
+    background: #fff;
+  }
+  .poster-preview-tip {
+    color: #fff;
+    margin-top:14px;
+    font-size:14px;
+  }
+</style>
+</head>
+
+<body>
+<div id="app" class="app-container">
+  <div class="top-bar"></div>
+
+  <!-- 首页 -->
+  <div v-if="page === 'home'" class="card home-card">
+    <h1 class="home-title">
+      很多人只是<span class="pink">假装接纳自己</span><br />
+      你是不是？
+    </h1>
+    <p class="home-sub">
+      测你的自我接纳真伪指数，看清你对待自己的真实模式
+    </p>
+    <div class="divider-line"></div>
+    <div class="home-desc">
+      <p>你收藏了很多和解文案，道理全都懂。</p>
+      <p>可一旦出错、落后、达不到期待，最先苛责你的人，还是你自己。</p>
+      <p>这不是测你懂不懂道理，而是看压力之下，你会不会继续为难自己。</p>
+    </div>
+    <button class="btn btn-primary" @click="startTest">开始测试</button>
+    <p class="tip-small">一共15题，做完自动出结果 · 趣味评估仅供参考</p>
+  </div>
+
+  <!-- 答题页 -->
+  <div v-if="page === 'question'" class="card question-card">
+    <div class="progress-wrap">
+      <div class="progress-bar" :style="{ width: progressPercent + '%' }"></div>
+    </div>
+    <div class="q-index">第 {{ currentIndex + 1 }} / {{ questionList.length }} 题</div>
+    <div class="q-title">{{ currentQuestion.title }}</div>
+    <div class="option-list">
+      <div
+        v-for="(opt, idx) in currentQuestion.options"
+        :key="idx"
+        class="option-item"
+        :class="{ active: answerList[currentIndex] === idx }"
+        @click="choose(idx)"
+      >
+        {{ opt.label }}
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-ghost" @click="prev" :disabled="currentIndex === 0">上一题</button>
+      <button class="btn btn-primary" @click="next">
+        {{ currentIndex === questionList.length - 1 ? '查看结果' : '下一题' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- 结果页 -->
+  <div v-if="page === 'result'" class="card result-card">
+    <div class="result-score-block">
+      <div class="result-score">{{ totalScore }}</div>
+      <div class="result-full">满分 75</div>
+    </div>
+
+    <div class="result-tag">{{ resultData.tag }}</div>
+    <div class="result-slogan">「{{ resultData.slogan }}」</div>
+
+    <div class="result-text">
+      <p><strong>结果解读</strong></p>
+      <p>{{ resultData.text }}</p>
+    </div>
+
+    <div class="result-action-row">
+      <button class="btn btn-ghost" @click="copyResult">复制结果</button>
+      <button class="btn btn-ghost" @click="openSharePoster" :disabled="generating">
+        {{ generating ? '生成中...' : '分享海报' }}
+      </button>
+      <button class="btn btn-primary" @click="resetAll">重新测试</button>
+    </div>
+
+    <p class="tip-small" style="margin-top:18px;">⚠️趣味心理评估，仅自我参考，不属于专业心理诊断<br>💡提示：海报功能需要把文件保存到本地浏览器打开运行</p>
+  </div>
+
+  <!-- 隐藏海报DOM，专门用来导出图片 -->
+  <div ref="posterDom" class="poster-box">
+    <div class="poster-title">自我接纳真伪指数测试</div>
+    <div class="poster-score">{{ totalScore }}</div>
+    <div class="poster-tag">{{ resultData.tag }}</div>
+    <div class="poster-slogan">「{{ resultData.slogan }}」</div>
+    <div class="poster-desc">{{ resultData.text }}</div>
+    <div class="poster-footer">趣味心理测试 · 仅供娱乐参考</div>
+  </div>
+
+  <!-- 海报预览弹窗 -->
+  <div v-if="showPosterMask" class="poster-mask" @click.self="closePosterMask">
+    <div class="poster-preview-wrap">
+      <img class="poster-preview-img" :src="posterImgUrl" alt="分享海报">
+      <div class="poster-preview-tip">长按图片保存到相册 / 分享</div>
+    </div>
+  </div>
+
+  <div v-if="showToast" class="toast">{{ toastText }}</div>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      page: 'home',
+      currentIndex: 0,
+      answerList: [],
+      showToast: false,
+      toastText: '',
+      generating: false,
+      showPosterMask: false,
+      posterImgUrl: '',
+      questionList: [
+        {
+          title: '明明已经很累，但还有一件事没达到给自己定的标准，你通常会？',
+          options: [
+            { label: 'A. 硬撑完成，累一点没关系，不能允许自己“交差不合格”', score: 5 },
+            { label: 'B. 焦虑纠结，休息也不安心，心里一直惦记没完成的目标', score: 3 },
+            { label: 'C. 权衡一下，如果不是重要的事，允许延后，先休息', score: 2 },
+            { label: 'D. 身体感受优先，疲惫的时候有权暂停，标准可以延后', score: 0 }
+          ]
+        },
+        {
+          title: '别人对你提出不合理的期待，你做不到的时候？',
+          options: [
+            { label: 'A. 愧疚自责，觉得是自己能力不够，想办法勉强满足对方', score: 5 },
+            { label: 'B. 不好意思拒绝，会想办法折中，委屈自己一部分', score: 3 },
+            { label: 'C. 礼貌拒绝，但会短暂不安，反复回想对方会不会失望', score: 2 },
+            { label: 'D. 坦然承认做不到，不把别人的期待变成自己的负担', score: 0 }
+          ]
+        },
+        {
+          title: '你发现自己身上有一个很难改掉的短板，长期改不好？',
+          options: [
+            { label: 'A. 持续嫌弃这个短板，不断想办法修正，无法和它共存', score: 5 },
+            { label: 'B. 不甘心，一直给自己施压，责怪自己意志力不足', score: 3 },
+            { label: 'C. 接受它很难改掉，但依然会适度调整，不强求根除', score: 2 },
+            { label: 'D. 接纳这是你的一部分，不把它当成必须清除的缺陷', score: 0 }
+          ]
+        },
+        {
+          title: '当你需要求助别人、暴露自己不懂、不会的时候？',
+          options: [
+            { label: 'A. 非常抗拒，宁愿自己硬扛，不想展露“不行”', score: 5 },
+            { label: 'B. 很犹豫，不到万不得已不愿意开口求助', score: 3 },
+            { label: 'C. 可以求助，但会觉得是自己能力不足才需要别人', score: 2 },
+            { label: 'D. 求助只是一种选择，暴露局限并不会减损你的价值', score: 0 }
+          ]
+        },
+        {
+          title: '一段关系消耗你，但是离开会让你背负“不够懂事”的评价？',
+          options: [
+            { label: 'A. 继续维持，优先维持体面，牺牲自己的感受', score: 5 },
+            { label: 'B. 舍不得又难受，反复内耗，迟迟不敢抽身', score: 3 },
+            { label: 'C. 慢慢抽离，但会有负罪感', score: 2 },
+            { label: 'D. 优先照顾自己的情绪，别人怎么评价没有那么重要', score: 0 }
+          ]
+        },
+        {
+          title: '复盘一件失败的事，你的关注点更偏向？',
+          options: [
+            { label: 'A. 盯着自己哪里做错，深挖自己的问题', score: 5 },
+            { label: 'B. 惋惜结果，懊恼自己当初可以做得更好', score: 3 },
+            { label: 'C. 总结经验，同时允许当时的自己有局限', score: 2 },
+            { label: 'D. 重点看过程里自己已经付出的部分', score: 0 }
+          ]
+        },
+        {
+          title: '看到别人轻松做到你很难做好的事？',
+          options: [
+            { label: 'A. 拿来对照自己，加深“我很差劲”的感受', score: 5 },
+            { label: 'B. 羡慕，同时鞭策自己要跟上别人的节奏', score: 3 },
+            { label: 'C. 欣赏对方，清楚每个人天赋赛道不一样', score: 2 },
+            { label: 'D. 别人的节奏和你的自我价值无关', score: 0 }
+          ]
+        },
+        {
+          title: '你计划给自己放松一天，但是突然冒出额外工作/任务？',
+          options: [
+            { label: 'A. 取消休息，优先完成任务，休息是可有可无的', score: 5 },
+            { label: 'B. 一边干活一边烦躁，但是不会拒绝', score: 3 },
+            { label: 'C. 分清轻重，紧急的处理，非紧急的守住休息时间', score: 2 },
+            { label: 'D. 休息是你的正当权利，不会轻易牺牲', score: 0 }
+          ]
+        },
+        {
+          title: '你犯错之后，身边人已经原谅你了，你会？',
+          options: [
+            { label: 'A. 很久过不去，持续自我追责，比别人更苛刻', score: 5 },
+            { label: 'B. 心里久久介意，反复回想这个失误', score: 3 },
+            { label: 'C. 慢慢释怀，但偶尔还会想起', score: 2 },
+            { label: 'D. 他人谅解之后，你也愿意放过自己', score: 0 }
+          ]
+        },
+        {
+          title: '你能不能接受：有些努力，就是看不到回报？',
+          options: [
+            { label: 'A. 很难接受，没有回报的努力等于浪费', score: 5 },
+            { label: 'B. 不甘心，会反复琢磨是不是自己方法不对', score: 3 },
+            { label: 'C. 可以接受，但会觉得遗憾', score: 2 },
+            { label: 'D. 努力本身是你的选择，不需要回报作为通行证', score: 0 }
+          ]
+        },
+        {
+          title: '你表现平平、没有亮点的时候，你怎么看待当下的自己？',
+          options: [
+            { label: 'A. 会觉得此刻的自己没有价值，不值得被好好对待', score: 5 },
+            { label: 'B. 会失落，希望尽快找回亮眼的状态', score: 3 },
+            { label: 'C. 平常心，低谷平淡本来就是常态', score: 2 },
+            { label: 'D. 无论耀眼或者普通，价值恒定', score: 0 }
+          ]
+        },
+        {
+          title: '为了维持一个“靠谱、优秀”的人设，你愿意长期委屈自己吗？',
+          options: [
+            { label: 'A. 愿意，人设稳定比自己舒服更重要', score: 5 },
+            { label: 'B. 习惯性这样做，已经不太察觉自己在委屈', score: 3 },
+            { label: 'C. 偶尔会，但事后会提醒自己别过度消耗', score: 2 },
+            { label: 'D. 拒绝用人设绑架自己，舒服优先', score: 0 }
+          ]
+        },
+        {
+          title: '当你产生负面情绪（嫉妒、自私、懒惰）这类“不光彩”的念头？',
+          options: [
+            { label: 'A. 厌恶这样的自己，批判自己不该有这种想法', score: 5 },
+            { label: 'B. 压抑念头，强迫自己不要这么想', score: 3 },
+            { label: 'C. 知道念头不受控制，不让念头定义自己', score: 2 },
+            { label: 'D. 情绪念头只是本能，不需要为此自我审判', score: 0 }
+          ]
+        },
+        {
+          title: '一件事没做好，你愿意对外坦诚“我这次搞砸了”吗？',
+          options: [
+            { label: 'A. 极力掩盖，不想让别人看见失败', score: 5 },
+            { label: 'B. 尽量淡化，不到必要绝不承认', score: 3 },
+            { label: 'C. 可以承认，但心里会难堪很久', score: 2 },
+            { label: 'D. 坦然说出，失败只是一件事，不是标签', score: 0 }
+          ]
+        },
+        {
+          title: '一句话自测：当「理想的自己」和「真实的自己」冲突时，你通常站哪边？',
+          options: [
+            { label: 'A. 站理想自己，逼着真实的自己追赶', score: 5 },
+            { label: 'B. 偏向理想自己，对真实的自己不满意', score: 3 },
+            { label: 'C. 两边平衡，量力而行', score: 2 },
+            { label: 'D. 坚定站真实的自己', score: 0 }
+          ]
+        }
+      ],
+      resultMap: [
+        {
+          min: 60, max: 75,
+          tag: '伪接纳·道理自欺型',
+          slogan: '心里熟读和解文案，行动持续审判自己',
+          text: '你看过很多“接纳自己”的文字，理智上非常清楚人无完人。但一旦事情出错、达不到期待，旧有的苛责模式立刻启动。你会安慰别人“没关系”，这套温柔从来不会留给自己。所谓和解，只是存放在收藏夹里的理论；遇到压力，你还是第一个牺牲自己感受去补缺口的人。'
+        },
+        {
+          min: 30, max: 59,
+          tag: '半接纳·摇摆拉扯型',
+          slogan: '偶尔放过自己，前提是没有搞砸事情',
+          text: '状态顺风顺水的时候，你可以大方接纳自己，觉得“我这样就很好”；一旦遭遇失败、差评、落后，接纳立刻失效，迅速切换自我攻击模式。你的接纳是有条件的：只有表现合格，才配善待自己。一旦不符合期待，就收回对自己的包容。'
+        },
+        {
+          min: 10, max: 29,
+          tag: '渐进接纳·有边界的善待',
+          slogan: '优先照顾感受，不拿完美绑架自己',
+          text: '你明白接纳不等于躺平摆烂。你依然会想要进步，但不再用“必须完美”惩罚自己。就算事情搞砸，你第一反应不再是否定整个人，而是区分：这件事搞砸了 ≠ 我这个人不值得被善待。你正在建立稳定的自我善待模式，接纳不再依赖事情结果的好坏。'
+        },
+        {
+          min: 0, max: 9,
+          tag: '本真接纳·无条件善待型',
+          slogan: '无论好坏境遇，你都站在自己这边',
+          text: '你的接纳不需要前提。成功时不膨胀，失意时不反噬自己。你不需要靠优秀、懂事、不出错换取自我善待。哪怕暴露笨拙、软弱、局限，你的第一盟友永远是自己。你不需要反复说服自己“要接纳”，善待自己已经变成本能。'
+        }
+      ]
+    };
+  },
+  computed: {
+    currentQuestion() {
+      return this.questionList[this.currentIndex];
+    },
+    totalScore() {
+      let s = 0;
+      this.answerList.forEach((optIdx, qIdx) => {
+        const q = this.questionList[qIdx];
+        if (q && q.options[optIdx] !== undefined) {
+          s += q.options[optIdx].score;
+        }
+      });
+      return s;
+    },
+    resultData() {
+      const score = this.totalScore;
+      if (score >= 60) return this.resultMap[0];
+      if (score >= 30) return this.resultMap[1];
+      if (score >= 10) return this.resultMap[2];
+      return this.resultMap[3];
+    },
+    progressPercent() {
+      return ((this.currentIndex + 1) / this.questionList.length) * 100;
+    }
+  },
+  methods: {
+    startTest() {
+      this.page = 'question';
+      this.currentIndex = 0;
+      this.answerList = new Array(this.questionList.length).fill(null);
+    },
+    choose(idx) {
+      this.answerList[this.currentIndex] = idx;
+    },
+    prev() {
+      if (this.currentIndex > 0) this.currentIndex--;
+    },
+    next() {
+      if (this.answerList[this.currentIndex] === null) {
+        this.showToastFn('请先选择一个答案');
+        return;
+      }
+      if (this.currentIndex < this.questionList.length - 1) {
+        this.currentIndex++;
+      } else {
+        this.page = 'result';
+      }
+    },
+    resetAll() {
+      this.page = 'home';
+      this.currentIndex = 0;
+      this.answerList = [];
+      this.showPosterMask = false;
+    },
+    async copyResult() {
+      const content = `✨自我接纳真伪指数：${this.totalScore}分｜${this.resultData.tag}\n「${this.resultData.slogan}」\n${this.resultData.text}`;
+      try {
+        await navigator.clipboard.writeText(content);
+        this.showToastFn('✅复制成功，去发小红书吧！');
+      } catch (e) {
+        this.showToastFn('复制失败，请手动复制');
+      }
+    },
+    async openSharePoster() {
+      if (this.generating) return;
+      this.generating = true;
+      try {
+        const node = this.$refs.posterDom;
+        // 拿到base64图片，放到弹窗img里面
+        const dataUrl = await htmlToImage.toPng(node, { quality: 1 });
+        this.posterImgUrl = dataUrl;
+        this.showPosterMask = true;
+      } catch (err) {
+        console.error(err);
+        this.showToastFn('❌生成失败，请下载HTML本地打开');
+      } finally {
+        this.generating = false;
+      }
+    },
+    closePosterMask() {
+      this.showPosterMask = false;
+    },
+    showToastFn(txt) {
+      this.toastText = txt;
+      this.showToast = true;
+      setTimeout(() => {
+        this.showToast = false;
+      }, 1800);
+    }
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
